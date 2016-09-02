@@ -36,7 +36,6 @@ class Grid: UIView {
     
     let spacing = 0
     let gridCount = 9
-    var isHighlighted: Bool = false
     
     func translate(index: Int) -> Int {
         switch index {
@@ -54,7 +53,7 @@ class Grid: UIView {
             return 0
         }
     }
-
+    
     
     // MARK: Initialization
     required init?(coder aDecoder: NSCoder) {
@@ -72,7 +71,7 @@ class Grid: UIView {
             button.setImage(gridImages[x], forState: .Normal)
             button.setImage(oImages[x], forState: .Selected)
             button.setImage(xImages[x], forState: .Disabled)
-
+            
             
             button.adjustsImageWhenHighlighted = false
             button.adjustsImageWhenDisabled = false
@@ -125,7 +124,8 @@ class Grid: UIView {
                 print(String(x))
             }
         } else {
-           selectedX.append(translate(gridButtons.indexOf(button)!))
+            
+            selectedX.append(translate(gridButtons.indexOf(button)!))
             
             print("Button has been tapped!")
             for x in selectedX {
@@ -142,34 +142,53 @@ class Grid: UIView {
                 if selectedO.contains(index) {
                     button.enabled = false
                     button.userInteractionEnabled = false
+                    
                 }
             } else {
                 if selectedX.contains(index) {
                     button.selected = true
                     button.userInteractionEnabled = false
                 }
-        }
-        dispatch_async(dispatch_get_main_queue(), {
-            self.setNeedsLayout()
-        });
-        
-        func chipButtonTapped(button: UIButton) {
-            touchedGrid = gridButtons.indexOf(button)!
-            selectedGrids.append(translate(gridButtons.indexOf(button)!))
+            }
+            dispatch_async(dispatch_get_main_queue(), {
+                self.setNeedsLayout()
+            });
             
-            updateButtonSelectionStates()
+            func chipButtonTapped(button: UIButton) {
+                
+                touchedGrid = gridButtons.indexOf(button)!
+                
+                if isEven {
+                    selectedO.append(translate(gridButtons.indexOf(button)!))
+                    
+                    print("Button has been tapped!")
+                    for x in selectedO {
+                        print(String(x))
+                    }
+                } else {
+                    selectedX.append(translate(gridButtons.indexOf(button)!))
+                    
+                    print("Button has been tapped!")
+                    for x in selectedX {
+                        print(String(x))
+                    }
+                }
+                
+                updateButtonSelectionStates()
+            }
         }
+        nextRound(roundCount)
     }
-    
-    func whoBets(round: Int) -> Bool {
+    func nextRound(round: Int){
+        roundCount += 1
         if round % 2 == 0 {
-            //print("Round is even, player 2 bets")
+            print("Round is even, player 2 bets")
             isEven = true
-            return isEven
         } else {
-            //print("Round is odd, player 1 bets")
+            print("Round is odd, player 1 bets")
             isEven = false
-            return isEven
         }
     }
+
 }
+
