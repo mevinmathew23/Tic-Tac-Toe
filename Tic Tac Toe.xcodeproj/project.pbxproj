@@ -13,6 +13,8 @@
 		FBFA8FA91D79BF9800A77AED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBFA8FA71D79BF9800A77AED /* Main.storyboard */; };
 		FBFA8FAB1D79BF9800A77AED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBFA8FAA1D79BF9800A77AED /* Assets.xcassets */; };
 		FBFA8FAE1D79BF9800A77AED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBFA8FAC1D79BF9800A77AED /* LaunchScreen.storyboard */; };
+		FBFA8FBA1D7A2B4800A77AED /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBFA8FB71D7A2B4800A77AED /* HockeySDK.framework */; };
+		FBFA8FBB1D7A2B4800A77AED /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBFA8FB91D7A2B4800A77AED /* HockeySDKResources.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		FBFA8FAA1D79BF9800A77AED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FBFA8FAD1D79BF9800A77AED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FBFA8FAF1D79BF9800A77AED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FBFA8FB71D7A2B4800A77AED /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
+		FBFA8FB91D7A2B4800A77AED /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBFA8FBA1D7A2B4800A77AED /* HockeySDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +45,7 @@
 		FBFA8F971D79BF9800A77AED = {
 			isa = PBXGroup;
 			children = (
+				FBFA8FBC1D7A2B5800A77AED /* FrameWorks */,
 				FBFA8FA21D79BF9800A77AED /* Tic Tac Toe */,
 				FBFA8FA11D79BF9800A77AED /* Products */,
 			);
@@ -67,6 +73,32 @@
 			path = "Tic Tac Toe";
 			sourceTree = "<group>";
 		};
+		FBFA8FB61D7A2B4800A77AED /* HockeySDK.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				FBFA8FB71D7A2B4800A77AED /* HockeySDK.framework */,
+				FBFA8FB81D7A2B4800A77AED /* Resources */,
+			);
+			name = HockeySDK.embeddedframework;
+			path = "HockeySDK-iOS/HockeySDK.embeddedframework";
+			sourceTree = "<group>";
+		};
+		FBFA8FB81D7A2B4800A77AED /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FBFA8FB91D7A2B4800A77AED /* HockeySDKResources.bundle */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		FBFA8FBC1D7A2B5800A77AED /* FrameWorks */ = {
+			isa = PBXGroup;
+			children = (
+				FBFA8FB61D7A2B4800A77AED /* HockeySDK.embeddedframework */,
+			);
+			name = FrameWorks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -77,6 +109,7 @@
 				FBFA8F9C1D79BF9800A77AED /* Sources */,
 				FBFA8F9D1D79BF9800A77AED /* Frameworks */,
 				FBFA8F9E1D79BF9800A77AED /* Resources */,
+				FBFA8FB51D7A2ACD00A77AED /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -99,6 +132,7 @@
 				TargetAttributes = {
 					FBFA8F9F1D79BF9800A77AED = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = X8NS2SB4EM;
 					};
 				};
 			};
@@ -126,12 +160,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				FBFA8FAE1D79BF9800A77AED /* LaunchScreen.storyboard in Resources */,
+				FBFA8FBB1D7A2B4800A77AED /* HockeySDKResources.bundle in Resources */,
 				FBFA8FAB1D79BF9800A77AED /* Assets.xcassets in Resources */,
 				FBFA8FA91D79BF9800A77AED /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FBFA8FB51D7A2ACD00A77AED /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "FILE=\"${SRCROOT}/HockeySDK-iOS/BuildAgent\"\nif [ -f \"$FILE\" ]; then\n\"$FILE\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FBFA8F9C1D79BF9800A77AED /* Sources */ = {
@@ -255,10 +306,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Profit Solutions International Inc.";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/HockeySDK-iOS/HockeySDK.embeddedframework",
+				);
 				INFOPLIST_FILE = "Tic Tac Toe/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.psi.Tic-Tac-Toe";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "f5468347-93f2-4dca-b110-35492b0552f4";
 			};
 			name = Debug;
 		};
@@ -266,10 +323,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Profit Solutions International Inc.";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/HockeySDK-iOS/HockeySDK.embeddedframework",
+				);
 				INFOPLIST_FILE = "Tic Tac Toe/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.psi.Tic-Tac-Toe";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "f5468347-93f2-4dca-b110-35492b0552f4";
 			};
 			name = Release;
 		};

@@ -12,21 +12,8 @@ import UIKit
 let viewController = ViewController()
 
 // Setting variables needed
-var selectedO = [Int]()
-var selectedX = [Int]()
-var touchedGrid: Int? = nil
-var isX: Bool? = nil
 var isEven: Bool = false
 var roundCount = 1
-
-func resetChips() {
-    selectedO = [Int]()
-    selectedX = [Int]()
-    touchedGrid = nil
-    isX = nil
-    isEven = false
-    roundCount = 1
-}
 
 class Grid: UIView {
     
@@ -68,25 +55,28 @@ class Grid: UIView {
             
             //gridImages[x]?.description
             
-            button.setImage(gridImages[x], forState: .Normal)
-            button.setImage(oImages[x], forState: .Selected)
-            button.setImage(xImages[x], forState: .Disabled)
+            button.setBackgroundImage(gridImages[x], forState: .Normal)
+            button.setBackgroundImage(oImages[x], forState: .Selected)
+            button.setBackgroundImage(xImages[x], forState: .Disabled)
+//            button.setImage(gridImages[x], forState: .Normal)
+//            button.setImage(oImages[x], forState: .Selected)
+//            button.setImage(xImages[x], forState: .Disabled)
             
             
             button.adjustsImageWhenHighlighted = false
             button.adjustsImageWhenDisabled = false
             button.showsTouchWhenHighlighted = false
             
-            button.addTarget(self, action: #selector(Grid.gridButtonTapped(_:)), forControlEvents: .TouchDown)
             gridButtons += [button]
             addSubview(button)
         }
     }
     override func intrinsicContentSize() -> CGSize {
         let buttonSize = Int(frame.size.height)
-        //let width = (buttonSize * gridCount) + (spacing * (gridCount - 1))
+        let width = (buttonSize * (gridCount/3 ))
+        let height = (buttonSize * (gridCount/3))
         
-        return CGSize(width: buttonSize*3, height: buttonSize*3)
+        return CGSize(width: width, height: height)
     }
     override func layoutSubviews() {
         let buttonSize = Int(frame.size.height)
@@ -94,101 +84,68 @@ class Grid: UIView {
         
         // Offset each button's origin by the length of the button plus spacing.
         for (index, button) in gridButtons.enumerate() {
-            if index < 3 {
-                buttonFrame.origin.x = CGFloat(index * (buttonSize + spacing))
+//            if index < 3 {
+//                buttonFrame.origin.x = CGFloat(index * (buttonSize + spacing))
+//                button.frame = buttonFrame
+//            } else if (index < 6) && (index >= 3) {
+//                buttonFrame.origin.y = CGFloat(1 * (buttonSize + spacing))
+//                buttonFrame.origin.x = CGFloat((index - 3) * (buttonSize + spacing))
+//                button.frame = buttonFrame
+//            } else if (index < 9) && (index >= 6) {
+//                buttonFrame.origin.y = CGFloat(2 * (buttonSize + spacing))
+//                buttonFrame.origin.x = CGFloat((index - 6) * (buttonSize + spacing))
+//                button.frame = buttonFrame
+//            }
+            switch index {
+            case 0:
+                buttonFrame.origin.x = CGFloat(-frame.size.height/2)
+                buttonFrame.origin.y = CGFloat(-frame.size.height/2)
                 button.frame = buttonFrame
-            } else if (index < 6) && (index >= 3) {
-                buttonFrame.origin.y = CGFloat(1 * (buttonSize + spacing))
-                buttonFrame.origin.x = CGFloat((index - 3) * (buttonSize + spacing))
+                return
+            case 1:
+                buttonFrame.origin.x = CGFloat(0)
+                buttonFrame.origin.y = CGFloat(-frame.size.height/2)
                 button.frame = buttonFrame
-            } else if (index < 9) && (index >= 6) {
-                buttonFrame.origin.y = CGFloat(2 * (buttonSize + spacing))
-                buttonFrame.origin.x = CGFloat((index - 6) * (buttonSize + spacing))
+                return
+            case 2:
+                buttonFrame.origin.x = CGFloat(frame.size.height/2)
+                buttonFrame.origin.y = CGFloat(-frame.size.height/2)
                 button.frame = buttonFrame
+                return
+            case 3:
+                buttonFrame.origin.y = CGFloat(0)
+                buttonFrame.origin.x = CGFloat(-frame.size.height/2)
+                button.frame = buttonFrame
+                return
+            case 4:
+                buttonFrame.origin.x = CGFloat(0)
+                buttonFrame.origin.y = CGFloat(0)
+                button.frame = buttonFrame
+                return
+            case 5:
+                buttonFrame.origin.y = CGFloat(0)
+                buttonFrame.origin.x = CGFloat(frame.size.height/2)
+                button.frame = buttonFrame
+                return
+            case 6:
+                buttonFrame.origin.x = CGFloat(-frame.size.width/2)
+                buttonFrame.origin.y = CGFloat(frame.size.height/2)
+                button.frame = buttonFrame
+                return
+            case 7:
+                buttonFrame.origin.x = CGFloat(0)
+                buttonFrame.origin.y = CGFloat(frame.size.height/2)
+                button.frame = buttonFrame
+                return
+            case 8:
+                buttonFrame.origin.x = CGFloat(frame.size.width/2)
+                buttonFrame.origin.y = CGFloat(frame.size.height/2)
+                button.frame = buttonFrame
+                return
+            default:
+                return
             }
         }
-        updateButtonSelectionStates()
     }
-    
-    
-    // MARK: Button Action
-    func gridButtonTapped(button: UIButton) {
-        
-        touchedGrid = gridButtons.indexOf(button)!
-        
-        if isEven {
-            selectedO.append(translate(gridButtons.indexOf(button)!))
-            
-            print("Button has been tapped!")
-            for x in selectedO {
-                print(String(x))
-            }
-        } else {
-            
-            selectedX.append(translate(gridButtons.indexOf(button)!))
-            
-            print("Button has been tapped!")
-            for x in selectedX {
-                print(String(x))
-            }
-        }
-        
-        updateButtonSelectionStates()
-    }
-    func updateButtonSelectionStates() {
-        for (index, button) in gridButtons.enumerate() {
-            
-            if isEven {
-                if selectedO.contains(index) {
-                    button.enabled = false
-                    button.userInteractionEnabled = false
-                    
-                }
-            } else {
-                if selectedX.contains(index) {
-                    button.selected = true
-                    button.userInteractionEnabled = false
-                }
-            }
-            dispatch_async(dispatch_get_main_queue(), {
-                self.setNeedsLayout()
-            });
-            
-            func chipButtonTapped(button: UIButton) {
-                
-                touchedGrid = gridButtons.indexOf(button)!
-                
-                if isEven {
-                    selectedO.append(translate(gridButtons.indexOf(button)!))
-                    
-                    print("Button has been tapped!")
-                    for x in selectedO {
-                        print(String(x))
-                    }
-                } else {
-                    selectedX.append(translate(gridButtons.indexOf(button)!))
-                    
-                    print("Button has been tapped!")
-                    for x in selectedX {
-                        print(String(x))
-                    }
-                }
-                
-                updateButtonSelectionStates()
-            }
-        }
-        nextRound(roundCount)
-    }
-    func nextRound(round: Int){
-        roundCount += 1
-        if round % 2 == 0 {
-            print("Round is even, player 2 bets")
-            isEven = true
-        } else {
-            print("Round is odd, player 1 bets")
-            isEven = false
-        }
-    }
-
 }
 
