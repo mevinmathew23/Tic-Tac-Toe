@@ -1,5 +1,5 @@
 //
-//  Chips.swift
+//  Grid.swift
 //  War
 //
 //  Created by Apple Dev on 2016-08-12.
@@ -12,46 +12,30 @@ import UIKit
 let viewController = ViewController()
 
 // Setting variables needed
-var selectedChips = [Int]()
-var touchedChip: Int? = nil
-var totalBet: Int = 0
-var isSolo: Bool! = false
-var isEven: Bool! = false
-var isBettingPhase: Bool! = true
+var selectedO = [Int]()
+var selectedX = [Int]()
+var touchedGrid: Int? = nil
+var isX: Bool? = nil
+var isEven: Bool = false
 var roundCount = 1
 
-var sFX = Settings().defaults.boolForKey("soundFX")
-var mute = Settings().defaults.boolForKey("Mute")
-
-let sounds = Sounds()
-let audio = Audio()
-
-
-//Function for betting.
-func betSum() {
-    totalBet = 0
-    for chips in selectedChips {
-        totalBet += chips
-    }
-}
 func resetChips() {
-    selectedChips = [Int]()
-    touchedChip = nil
-    totalBet = 0
-    isSolo = false
+    selectedO = [Int]()
+    selectedX = [Int]()
+    touchedGrid = nil
+    isX = nil
     isEven = false
-    isBettingPhase = true
     roundCount = 1
 }
 
-class Chips: UIView {
+class Grid: UIView {
     
     // MARK: Properties
     
-    var chipButtons = [UIButton]()
+    var gridButtons = [UIButton]()
     
     let spacing = 0
-    let chipCount = 5
+    let gridCount = 9
     var isHighlighted: Bool = false
     
     func translate(index: Int) -> Int {
@@ -76,113 +60,116 @@ class Chips: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        for x in 0..<chipCount {
+        for x in 0..<gridCount {
             let button = UIButton()
             
-            var chipImages = [UIImage(named: "bet5"), UIImage(named: "bet10"), UIImage(named: "bet20"), UIImage(named: "bet50"), UIImage(named: "bet100")]
+            let gridImages = [UIImage(named: "0"), UIImage(named: "1"), UIImage(named: "2"), UIImage(named: "3"), UIImage(named: "4"), UIImage(named: "5"), UIImage(named: "6"), UIImage(named: "7"), UIImage(named: "8")]
+            let oImages = [UIImage(named: "0_o"), UIImage(named: "1_o"), UIImage(named: "2_o"), UIImage(named: "3_o"), UIImage(named: "4_o"), UIImage(named: "5_o"), UIImage(named: "6_o"), UIImage(named: "7_o"), UIImage(named: "8_o")]
+            let xImages = [UIImage(named: "0_x"), UIImage(named: "1_x"), UIImage(named: "2_x"), UIImage(named: "3_x"), UIImage(named: "4_x"), UIImage(named: "5_x"), UIImage(named: "6_x"), UIImage(named: "7_x"), UIImage(named: "8_x")]
             
-            chipImages[x]?.description
+            //gridImages[x]?.description
             
-            button.setImage(chipImages[x], forState: .Normal)
+            button.setImage(gridImages[x], forState: .Normal)
+            button.setImage(oImages[x], forState: .Selected)
+            button.setImage(xImages[x], forState: .Disabled)
 
             
-            button.adjustsImageWhenHighlighted = true
-            button.adjustsImageWhenDisabled = true
-            button.showsTouchWhenHighlighted = true
+            button.adjustsImageWhenHighlighted = false
+            button.adjustsImageWhenDisabled = false
+            button.showsTouchWhenHighlighted = false
             
-            button.addTarget(self, action: #selector(Chips.chipButtonTapped(_:)), forControlEvents: .TouchDown)
-            chipButtons += [button]
+            button.addTarget(self, action: #selector(Grid.gridButtonTapped(_:)), forControlEvents: .TouchDown)
+            gridButtons += [button]
             addSubview(button)
         }
     }
     override func intrinsicContentSize() -> CGSize {
         let buttonSize = Int(frame.size.height)
-        let width = (buttonSize * chipCount) + (spacing * (chipCount - 1))
+        //let width = (buttonSize * gridCount) + (spacing * (gridCount - 1))
         
-        return CGSize(width: width, height: buttonSize)
+        return CGSize(width: buttonSize*3, height: buttonSize*3)
     }
     override func layoutSubviews() {
         let buttonSize = Int(frame.size.height)
         var buttonFrame = CGRect(x: 0,y: 0, width: buttonSize, height: buttonSize)
         
         // Offset each button's origin by the length of the button plus spacing.
-        for (index, button) in chipButtons.enumerate() {
+        for (index, button) in gridButtons.enumerate() {
             if index < 3 {
                 buttonFrame.origin.x = CGFloat(index * (buttonSize + spacing))
                 button.frame = buttonFrame
-            } else {
+            } else if (index < 6) && (index >= 3) {
                 buttonFrame.origin.y = CGFloat(1 * (buttonSize + spacing))
-                buttonFrame.origin.x = CGFloat((Double(index) - 2.5) * Double((buttonSize + spacing)))
+                buttonFrame.origin.x = CGFloat((index - 3) * (buttonSize + spacing))
+                button.frame = buttonFrame
+            } else if (index < 9) && (index >= 6) {
+                buttonFrame.origin.y = CGFloat(2 * (buttonSize + spacing))
+                buttonFrame.origin.x = CGFloat((index - 6) * (buttonSize + spacing))
                 button.frame = buttonFrame
             }
         }
         updateButtonSelectionStates()
     }
     
-    func updateChipSounds() {
-        sFX = Settings().defaults.boolForKey("soundFX")
-    }
-
-    
     
     // MARK: Button Action
-    func chipButtonTapped(button: UIButton) {
-        updateChipSounds()
-        if sFX == false {
-            sounds.readFileIntoAVPlayer("chipsToss", volume: 1.0)
-            sounds.toggleAVPlayer()
-        }
+    func gridButtonTapped(button: UIButton) {
         
+        touchedGrid = gridButtons.indexOf(button)!
         
-        
-        touchedChip = chipButtons.indexOf(button)!
-        selectedChips.append(translate(chipButtons.indexOf(button)!))
-        
-        print("Button has been tapped!")
-        for chips in selectedChips {
-            print(String(chips))
+        if isEven {
+            selectedO.append(translate(gridButtons.indexOf(button)!))
+            
+            print("Button has been tapped!")
+            for x in selectedO {
+                print(String(x))
+            }
+        } else {
+           selectedX.append(translate(gridButtons.indexOf(button)!))
+            
+            print("Button has been tapped!")
+            for x in selectedX {
+                print(String(x))
+            }
         }
         
         updateButtonSelectionStates()
     }
     func updateButtonSelectionStates() {
-        betSum()
-        for (index, button) in chipButtons.enumerate() {
+        for (index, button) in gridButtons.enumerate() {
             
-            if isSolo == false {
-                button.enabled = (playerOneMoney >= translate(index) && totalBet <= playerOneMoney - translate(index)) && (playerTwoMoney >= translate(index) && totalBet <= playerTwoMoney - translate(index))
-                whoBets(roundCount)
+            if isEven {
+                if selectedO.contains(index) {
+                    button.enabled = false
+                    button.userInteractionEnabled = false
+                }
             } else {
-                button.enabled = (playerOneMoney >= translate(index) && totalBet <= playerOneMoney - translate(index)) && (playerTwoMoney >= translate(index) && totalBet <= playerTwoMoney - translate(index))
-            }
-            
-            button.selected = index == touchedChip
+                if selectedX.contains(index) {
+                    button.selected = true
+                    button.userInteractionEnabled = false
+                }
         }
         dispatch_async(dispatch_get_main_queue(), {
             self.setNeedsLayout()
         });
         
         func chipButtonTapped(button: UIButton) {
-            if sFX == false {
-                sounds.readFileIntoAVPlayer("chipsToss", volume: 1.0)
-                sounds.toggleAVPlayer()
-            }
-            touchedChip = chipButtons.indexOf(button)!
-            selectedChips.append(translate(chipButtons.indexOf(button)!))
+            touchedGrid = gridButtons.indexOf(button)!
+            selectedGrids.append(translate(gridButtons.indexOf(button)!))
             
             updateButtonSelectionStates()
         }
     }
     
-    func whoBets(round: Int) -> Int {
+    func whoBets(round: Int) -> Bool {
         if round % 2 == 0 {
             //print("Round is even, player 2 bets")
             isEven = true
-            return playerTwoMoney
+            return isEven
         } else {
             //print("Round is odd, player 1 bets")
             isEven = false
-            return playerOneMoney
+            return isEven
         }
     }
 }
